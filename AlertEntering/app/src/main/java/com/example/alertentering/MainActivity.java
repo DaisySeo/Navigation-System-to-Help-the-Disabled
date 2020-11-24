@@ -13,6 +13,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +29,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.pedro.library.AutoPermissions;
 import com.pedro.library.AutoPermissionsListener;
+
+import static android.content.Context.VIBRATOR_SERVICE;
 
 public class MainActivity extends AppCompatActivity {
     LocationManager locManager;
@@ -86,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        locManager.addProximityAlert(lat, lng, 650, -1, proximityIntent);
+        locManager.addProximityAlert(lat, lng, 9999, -1, proximityIntent);
 
     }
 
@@ -144,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
                 // for ActivityCompat#requestPermissions for more details.
                 return;
             }
-            locManager.addProximityAlert(lat, lng, 650, -1, proximityIntent);
+            locManager.addProximityAlert(lat, lng, 9999, -1, proximityIntent);
         }
 
         public void onProviderDisabled(String provider) {
@@ -197,6 +200,21 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
             map.setMyLocationEnabled(false);
+        }
+    }
+
+    public class AlertReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            boolean isEntering = intent.getBooleanExtra(LocationManager.KEY_PROXIMITY_ENTERING, false);
+
+            if(isEntering) {
+                Vibrator vib = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+                vib.vibrate(1000);
+                Toast.makeText(context, "목표 지역에 접근중입니다...", Toast.LENGTH_LONG).show();
+            }
+            else
+                Toast.makeText(context, "목표 지점에서 벗어납니다...", Toast.LENGTH_LONG).show();
         }
     }
 }
