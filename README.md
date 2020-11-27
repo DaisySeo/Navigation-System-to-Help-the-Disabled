@@ -14,3 +14,5 @@
 - 시각 장애인을 위한 기능: 
     - 기존 목적지로 가는 경로에서 벗어나면 진동을 울려서 사용자에게 알린다.
     - 목적지를 음성으로 입력받고 경로를 음성으로 안내한다.
+
+> 참고 OpenSource : OsmAnd https://github.com/osmandapp/Osmand/tree/master/OsmAndCore-sample
